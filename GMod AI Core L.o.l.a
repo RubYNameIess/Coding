@@ -1,0 +1,367 @@
+@name LOLA A.I Core V1.0
+@inputs 
+@outputs URL:string Play
+@persist Active:number
+@trigger 
+@model models/props_c17/lampShade001a.mdl
+runOnChat(1)
+#interval(1000)
+Play = 1
+Jap = "ja-JP_EmiV3Voice"
+En = "en-US_AllisonVoice"
+Voice = Jap
+
+E=entity()
+
+if(first()){
+    E = entity()
+    O = owner()
+    #This E2 was inspired by A.L.A.N and S.N.E.K Core
+    print("This is artificial intelligence and Interface Core, L O L A")
+    print("Running Version 1.0")
+    print("made by Jesus_Avocado")
+    print("System check; Everything seems to be alright")
+    print("Hello, "+owner():name())
+    StartupLine = "This is artificial intelligence and Interface Core, L O L A, Running Version 1.0, made by Jesus_Avocado, System check; Everything seems to be alright. Hello, "+owner():name()
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+StartupLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+
+}
+    NvmVoiceline = "Alright."
+    CallVoiceLine = "Yes?."
+    OkVoiceLine = "Ok."
+    Loadout1VoiceLine = "Sure, giving you loadout1."
+    GoodVoiceLine = "That's good to hear, and have a nice day."
+    BadVoiceLine = "I'm sorry to hear that, is there anything i could do?"
+    UnsureVoiceLine = "Alright let me know if you need anything, ok?"
+    OfcourseVoiceLine = "Of Couse."
+    WhatisitVoiceLine = "Alright, what is it?"
+    ImdoingalrightVoiceLine = "I'm doing alright, thanks. You?"
+    WhatsongwouldyoulikeVoiceLine = "What song would you like to play?"
+    AllthecommandsLine = "Here are all the available commands for now."
+    List1 = "(song1) Open Your Eyes, (song2) Out of sync, (song3) Think, (song4) Chiru Chiru, (song5) Say so, (song6) The only thing i know for real, (song7) collective consciousness."
+    
+    
+    Song1Line = "Now playing Auscore - Open Your Eyes."
+    Song2Line = "Now playing DEVO - Out of sync."
+    Song3Line = "Now playing Think."
+    Song4Line = "Now playing REOL - Chiru Chiru."
+    Song5Line = "Now playing Say so."
+    
+    Song1 = "https://dl.dropbox.com/s/wir6r6m6jnc0j4m/Auscore-%20Open%20Your%20Eyes%20%28Lyrics%29.mp3?dl=1"
+    Song2 = "https://dl.dropbox.com/s/xll0zr9grv32pw5/%28She%27s%29%20Out%20Of%20Sync.mp3?dl=1"
+    Song3 = "https://dl.dropbox.com/s/9cpz9wz7zymyoa9/think.mp3?dl=1"
+    Song4 = "https://dl.dropbox.com/s/xb5wuykjj0watw0/REOL%20-%20ChiruChiru.mp3?dl=1"
+    Song5 = "https://dl.dropbox.com/s/rkssrf0c2oknjdr/Say%20So%20%28Japanese%20Version%29.mp3?dl=1"
+    Song6 = "https://dl.dropbox.com/s/3m8qv2h8zgkzqqf/the%20only%20thing%20i%20know%20for%20real.mp3?dl=1"
+    Song7 = "https://dl.dropbox.com/s/fi5n9zqnuwle7sr/collective%20consciousness.mp3?dl=1"
+    Time = curtime()
+    
+    Loadout1list = "gm_giveswep cw_noobveske_diplomat; gm_giveswep cw_prokolot; gm_giveswep cw_ins_mk18; gm_giveswep cw_acr; gm_giveswep cw_ak12u; gm_giveswep cw_extrema_ratio_official; gm_giveswep cw_tr09_makarov"
+    Loadout2list = "gm_giveswep cw_tr09_makarov; gm_giveswep cw_extrema_ratio_official; gm_giveswep cw_acr; gm_giveswep cw_ak12u"
+    Sniper1list = "gm_giveswep cw_trg42; gm_giveswep cw_prokolot; gm_giveswep cw_extrema_ratio_official; gm_giveswep cw_acr"
+    Gunner1list = "gm_giveswep cw_ak12u; gm_giveswep cw_tr09_makarov; gm_giveswep cw_extrema_ratio_official"
+    Gunner2list = "gm_giveswep cw_noobveske_diplomat; gm_giveswep cw_tr09_makarov; gm_giveswep cw_extrema_ratio_official"
+    Shotgunner1list = ""
+    WeaponList = "loadout1, loadout2, sniper1, gunner1, gunner2"
+    
+LS = owner():lastSaid()
+if(changed(LS:find("lola"))&LS:find("lola")){
+    timer("Name",1)
+}
+if(changed(LS:find("sd"))&LS:find("sd")){
+    selfDestructAll()
+}
+
+if(clk("Name")){
+    timer("Call",15000)
+    Active = 1
+    stoptimer("Name")
+    print("LOLA A.I Core: Yes?")
+#    timer("CallVoice",(5-(curtime()-Time))*1000)
+}
+
+if(Active == 1&(changed(LS:find("help"))&LS:find("help"))){
+    Active = 0
+    stoptimer("Call")
+    print("LOLA A.I Core: Here are all the available commands for now.")
+    print("--------------------------------------------------")
+    print("lola/LOLA - call name to start all commands.")
+    print("thanks - you can thank me.")
+    print("help - shows this list.")
+    print("play selection - shows list of playable songs (must be linked to a stream radio).")
+    print("how are you - tells you how i feel.")
+    print("give loadout - i can give you loadout presents that you have added.")
+    print("--------------------------------------------------")
+    print("good - reply to me when i asks how you feel.")
+    print("bad - reply to me when i asks how you feel.")
+    print("unsure - reply to me when i asks how you feel.")
+    print("--------------------------------------------------")
+    print("yes - reply to me when i asks if i can do anything for you.")
+    print("no - reply to me when i asks if i can do anything for you.")
+    print("--------------------------------------------------")
+    print("nvm - if you want to stop the command chain from running.")
+    print("nevermind - if you want to stop the command chain from running.")
+    print("--------------------------------------------------")
+    
+#    timer("Allthecommands",(5-(curtime()-Time))*1000)
+}
+#-----------------------if not called-----------------------
+if(clk("Call")){
+    Active = 0
+    stoptimer("Call")
+    print("LOLA A.I Core: Ok.")
+#    timer("OkVoice",(5-(curtime()-Time))*1000)
+}
+
+#-----------------------loadout stuff-----------------------
+if(Active == 1&(changed(LS:find("give loadout"))&LS:find("give loadout"))){
+    Active = 6
+    stoptimer("Call")
+    print("LOLA A.I Core: What loadout would you want to use?")
+    print("LOLA A.I Core: "+WeaponList)
+}
+if(Active == 1&(changed(LS:find("loadouts"))&LS:find("loadouts"))){
+    Active = 6
+    stoptimer("Call")
+    print("LOLA A.I Core: What loadout would you want to use?")
+    print("LOLA A.I Core: "+WeaponList)
+}
+if(Active == 1&(changed(LS:find("weapon selection"))&LS:find("weapon selection"))){
+    Active = 6
+    stoptimer("Call")
+    print("LOLA A.I Core: What loadout would you want to use?")
+    print("LOLA A.I Core: "+WeaponList)
+}
+
+if(Active == 6&(changed(LS:find("loadout1"))&LS:find("loadout1"))){
+    Active = 0
+    concmd(""+Loadout1list)
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright, Giving loadout 1.")
+}
+
+if(Active == 6&(changed(LS:find("gunner1"))&LS:find("gunner1"))){
+    Active = 0
+    concmd(""+Gunner1list)
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright, Giving gunner 1 loadout.")
+}
+
+if(Active == 6&(changed(LS:find("gunner2"))&LS:find("gunner2"))){
+    Active = 0
+    concmd(""+Gunner2list)
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright, Giving gunner 2 loadout.")
+}
+
+if(Active == 6&(changed(LS:find("sniper1"))&LS:find("sniper1"))){
+    Active = 0
+    concmd(""+Sniper1list)
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright, Giving sniper 1 loadout.")
+}
+
+if(Active == 6&(changed(LS:find("loadout2"))&LS:find("loadout2"))){
+    Active = 0
+    concmd(""+Loadout2list)
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright, Giving loadout 2.")
+}
+#-----------------------nevermind stuff-----------------------
+if(Active == 1&(changed(LS:find("nevermind"))&LS:find("nevermind"))){
+    Active = 0
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright.")
+#    timer("NvmVoice",(5-(curtime()-Time))*1000)
+}
+if(Active == 1&(changed(LS:find("nvm"))&LS:find("nvm"))){
+    Active = 0
+    stoptimer("Call")
+    print("LOLA A.I Core: Alright.")
+#    timer("NvmVoice",(5-(curtime()-Time))*1000)
+}
+#-----------------------loadout stuff-----------------------
+if(Active == 1&(changed(LS:find("loadout1"))&LS:find("loadout1"))){
+    Active = 0
+    stoptimer("Call")
+    print("LOLA A.I Core: Sure, giving you loadout1.")
+#    timer("Loadout1Voice",(5-(curtime()-Time))*1000)
+}
+
+#-----------------------song stuff-----------------------
+if(Active == 1&(changed(LS:find("song selection"))&LS:find("song selection"))){
+    Active = 5
+    print("LOLA A.I Core: What song would you like to play?")
+    print(""+List1)
+    stoptimer("Call")
+    timer("Whatsong",15000)
+#    timer("Whatsongwouldyoulikemetoplay",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song1"))&LS:find("song1"))){
+    Active = 0
+    URL = Song1
+    print("LOLA A.I Core: Alright, now playing Auscore - Open Your Eyes.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song1)
+    #    timer("Song1VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song2"))&LS:find("song2"))){
+    Active = 0
+    URL = Song2
+    print("LOLA A.I Core: Alright, now playing DEVO - Out of sync.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song2)
+#    timer("Song2VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song3"))&LS:find("song3"))){
+    Active = 0
+    URL = Song3
+    print("LOLA A.I Core: Alright, now playing Think")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song3)
+#    timer("Song3VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song4"))&LS:find("song4"))){
+    Active = 0
+    URL = Song4
+    print("LOLA A.I Core: Alright, now playing REOL - Chiru Chiru.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song4)
+#    timer("Song4VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song5"))&LS:find("song5"))){
+    Active = 0
+    URL = Song5
+    print("LOLA A.I Core: Alright, now playing Say so.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song5)
+#    timer("Song5VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song6"))&LS:find("song6"))){
+    Active = 0
+    URL = Song6
+    print("LOLA A.I Core: Alright, now playing Only thing i know for real.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song6)
+#    timer("Song6VoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 5&(changed(LS:find("song7"))&LS:find("song7"))){
+    Active = 0
+    URL = Song7
+    print("LOLA A.I Core: Alright, now playing collective consciousness.")
+    stoptimer("Whatsong")
+    owner():streamStart(7,+Song7)
+#    timer("Song7VoiceLine",(5-(curtime()-Time))*1000)
+}
+#-----------------------questions stuff-----------------------
+if(Active == 1&(changed(LS:find("how are you"))&LS:find("how are you"))){
+    Active = 0
+    stoptimer("Call")
+    timer("Howareyou",2)
+}
+
+if(clk("Howareyou")){
+    Active = 2
+    print("LOLA A.I Core: I'm doing alright, thanks. You?")
+    timer("Imdoingalright",(5-(curtime()-Time))*1000)
+    timer("Question1",20000)
+}    
+
+if(Active == 2&(changed(LS:find("good"))&LS:find("good"))){
+    Active = 0
+    print("LOLA A.I Core: That's good to hear, and have a nice day.")
+    stoptimer("Question1")
+#    timer("GoodVoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 2&(changed(LS:find("bad"))&LS:find("bad"))){
+    Active = 3
+    print("LOLA A.I Core: I'm sorry to hear that, is there anything i could do?")
+    stoptimer("Question1")
+#    timer("BadVoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 2&(changed(LS:find("unsure"))&LS:find("unsure"))){
+    Active = 0
+    print("LOLA A.I Core: Alright let me know if you need anything, ok?")
+    stoptimer("Question1")
+#    timer("UnsureVoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 1&(changed(LS:find("thanks"))&LS:find("thanks"))){
+    Active = 0
+    print("LOLA A.I Core: Of course.")
+#    timer("OfcourseVoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 3&(changed(LS:find("no"))&LS:find("no"))){
+    Active = 0
+    print("LOLA A.I Core: Alright, well in any case, have a nice day.")
+#    timer("NiceDayVoiceLine",(5-(curtime()-Time))*1000)
+}
+if(Active == 3&(changed(LS:find("yes"))&LS:find("yes"))){
+    Active = 1
+    print("LOLA A.I Core: Alright, what is it?")
+    timer("Call",15000)
+#    timer("WhatisitVoiceLine",(5-(curtime()-Time))*1000)
+}
+#-----------------------voiceline stuff-----------------------
+
+if(clk("NvmVoice")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+NvmVoiceline+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("Loadout1Voice")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+NvmVoiceline+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("OkVoice")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+OkVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("CallVoice")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+CallVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("GoodVoiceLine")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+GoodVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("BadVoiceLine")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+BadVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("UnsureVoiceLine")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+UnsureVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("OfcourseVoiceLine")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+OfcourseVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("WhatisitVoiceLine")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+WhatisitVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("Imdoingalright")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+ImdoingalrightVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("Whatsongwouldyoulikemetoplay")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+WhatsongwouldyoulikeVoiceLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+if(clk("Allthecommands")){
+    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+AllthecommandsLine+"&voice="+Voice+"&download=true&accept=audio%2Fmp3")
+}
+
+
+#song voice lines
+
+
+if(clk("Song1VoiceLine")){
+#    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+Song1Line+"&voice=en-US_AllisonVoice&download=true&accept=audio%2Fmp3")
+    owner():streamStart(2,""+Song1)
+}
+if(clk("Song2VoiceLine")){
+#    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+Song2Line+"&voice=en-US_AllisonVoice&download=true&accept=audio%2Fmp3")
+    owner():streamStart(2,""+Song2)
+}
+if(clk("Song3VoiceLine")){
+#    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+Song3Line+"&voice=en-US_AllisonVoice&download=true&accept=audio%2Fmp3")
+    owner():streamStart(2,""+Song3)
+}
+if(clk("Song4VoiceLine")){
+#    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+Song4Line+"&voice=en-US_AllisonVoice&download=true&accept=audio%2Fmp3")
+    owner():streamStart(2,""+Song4)
+}
+if(clk("Song5VoiceLine")){
+#    owner():streamStart(1,"https://text-to-speech-demo.ng.bluemix.net/api/v3/synthesize?text="+Song5Line+"&voice=en-US_AllisonVoice&download=true&accept=audio%2Fmp3")
+    owner():streamStart(2,""+Song5)
+}
+
