@@ -1,0 +1,246 @@
+@name Build Helper by Naki V1.0
+@inputs EGP:wirelink
+@persist PosEdit AngEdit Amount X Y Z Mode:string AxisVal:string Target:entity TargetModel:string ToWorld ToWorldEdit:string Copyang:angle
+
+#debug
+@outputs X Y Z Amount
+interval(100)
+runOnChat(1)
+runOnKeys(owner(),1)
+
+if(first()){
+    Mode="None"
+    Amount=0
+    Amount2="0"
+    AxisVal="None"
+    TargetModel="None"
+    Target=world()
+    ToWorld=0
+    ToWorldEdit="To World"
+    Copyang=ang(0,0,0)
+}
+
+O=owner()
+LS1=O:lastSaid()
+LS2=O:lastSaid():explode(" ")
+    
+    W=egpScrW(owner())
+    H=egpScrH(owner())
+    
+    M1=O:keyAttack1()
+    M2=O:keyAttack2()
+    
+    
+    
+if(changed(LS1)){
+    if(LS2[1, string]=="/help"){
+        hideChat(1)
+        print("Edit while holding no weapon.")
+        print("Available commands below.")
+        
+        print("/pos")
+        print("/ang")
+        print("/amount (Number)")
+        print("/stop_edit")
+        print("/toworld")
+        print("/totarget")
+        print("/angcopy")
+        print("/angpaste")
+
+        print("/x") 
+        print("/y") 
+        print("/z") 
+    }
+    if(LS2[1, string]=="/pos"){
+        hideChat(1)
+        print("Editing position.")
+        Mode="Position"
+        PosEdit=1
+        AngEdit=0
+    }
+    if(LS2[1, string]=="/amount"){
+        hideChat(1)
+        if(LS2[2, string]){
+            Amount=LS2[2, string]:toNumber()
+            if(AxisVal=="X"){
+                X=Amount
+            }elseif(AxisVal=="Y"){
+                Y=Amount
+            }elseif(AxisVal=="Z"){
+                Z=Amount
+            }
+            print("Amount set to "+Amount+".")
+        }else{
+            print("Invalid amount!")
+        }
+    }
+    if(LS2[1, string]=="/angreset"){
+        hideChat(1)
+        Target:setAng(ang(0,0,0))
+            print("Amount set to 0,0,0.")
+    }
+    if(LS2[1, string]=="/x"){
+        hideChat(1)
+        if(PosEdit==1){
+            X=Amount
+            Y=0
+            Z=0
+            AxisVal="X"
+            print("Editing X position.")
+        }elseif(AngEdit==1){
+            X=Amount
+            Y=0
+            Z=0
+            AxisVal="X"
+            print("Editing X angle.")
+        }else{
+            X=0
+            Y=0
+            Z=0
+            AxisVal="None"
+            print("No edit mode selected")
+        }
+    }
+    if(LS2[1, string]=="/y"){
+        hideChat(1)
+        if(PosEdit==1){
+            X=0
+            Y=Amount
+            Z=0
+            AxisVal="Y"
+            print("Editing Y position.")
+        }elseif(AngEdit==1){
+            X=0
+            Y=Amount
+            Z=0
+            AxisVal="Y"
+            print("Editing Y angle.")
+        }else{
+            X=0
+            Y=0
+            Z=0
+            AxisVal="None"
+            print("No edit mode selected")
+        }
+    }
+    if(LS2[1, string]=="/z"){
+        hideChat(1)
+        if(PosEdit==1){
+            X=0
+            Y=0
+            Z=Amount
+            AxisVal="Z"
+            print("Editing Z position.")
+        }elseif(AngEdit==1){
+            X=0
+            Y=0
+            Z=Amount
+            AxisVal="Z"
+            print("Editing Z angle.")
+        }else{
+            X=0
+            Y=0
+            Z=0
+            AxisVal="None"
+            print("No edit mode selected")
+        }
+    }
+    if(LS2[1, string]=="/ang"){
+        hideChat(1)
+        print("Editing angle.")
+        Mode="Angle"
+        PosEdit=0
+        AngEdit=1
+    }
+    if(LS2[1, string]=="/toworld"){
+        hideChat(1)
+        print("Editing compared to world.")
+        ToWorld=0
+        ToWorldEdit="To World"
+    }
+    if(LS2[1, string]=="/totarget"){
+        hideChat(1)
+        print("Editing compared to target.")
+        ToWorld=1
+        ToWorldEdit="To Target"
+    }
+    
+    if(LS2[1, string]=="/stop_edit"){
+        hideChat(1)
+        print("Editing stopped.")
+        Mode="None"
+        PosEdit=0
+        AngEdit=0
+    }
+    if(LS2[1, string]=="/target"){
+        Target=O:aimEntity()
+        hideChat(1)
+        print("Editing target selected.")
+        TargetModel=Target:model()
+    }
+    if(LS2[1, string]=="/notarget"){
+        Target=world()
+        hideChat(1)
+        print("Editing target removed.")
+        TargetModel="None"
+    }
+    
+    if(LS2[1, string]=="/angcopy"){
+        Copyang=O:aimEntity():angles()
+        hideChat(1)
+        print("Angles copied.")
+    }
+    if(LS2[1, string]=="/angpaste"){
+        hideChat(1)
+        Target:setAng(Copyang)
+        print("Angles pasted to target.")
+    }
+}
+
+EGP:egpText(1, "Mode : "+Mode, vec2(-920+W/2,0+H/2))
+EGP:egpText(2, "Amount : "+Amount, vec2(-920+W/2,15+H/2))
+EGP:egpText(3, "Axis : "+AxisVal, vec2(-920+W/2,30+H/2))
+EGP:egpText(4, "Movement Mode : "+ToWorldEdit, vec2(-920+W/2,45+H/2))
+
+EGP:egpText(5, "Target : "+TargetModel, vec2(-920+W/2,60+H/2))
+
+if(O:weapon():type()=="none"){
+if(changed(M1)&M1){
+    if(PosEdit){
+        print("Moved "+Amount+" on "+AxisVal+".")
+        if(ToWorld==1){
+            Target:setPos(Target:toWorld(vec(X,Y,Z)))
+        }elseif(ToWorld==0){
+            Target:setPos(Target:pos()+vec(X,Y,Z))
+        }
+    }
+    if(AngEdit){
+        print("Rotated "+Amount+" on "+AxisVal+".")
+        if(ToWorld==1){
+            Target:setAng(Target:toWorld(ang(X,Y,Z)))
+        }elseif(ToWorld==0){
+            Target:setAng(Target:angles()+ang(X,Y,Z))
+        }
+    }
+}
+if(changed(M2)&M2){
+    if(PosEdit){
+        print("Moved -"+Amount+" on "+AxisVal+".")
+        if(ToWorld==1){
+            Target:setPos(Target:toWorld(vec(-X,-Y,-Z)))
+        }
+        if(ToWorld==0){
+            Target:setPos(Target:pos()+vec(-X,-Y,-Z))
+        }
+    }
+    if(AngEdit){
+        print("Rotated -"+Amount+" on "+AxisVal+".")
+        if(ToWorld==1){
+            Target:setAng(Target:toWorld(ang(-X,-Y,-Z)))
+        }
+        if(ToWorld==0){
+            Target:setAng(Target:angles()+ang(-X,-Y,-Z))
+        }
+    }
+}
+}
