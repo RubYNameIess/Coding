@@ -1,0 +1,175 @@
+@name Star System Simulation
+@inputs SunEntity:entity
+@inputs [Planet1 Planet2 Planet3 Planet4]:entity
+@persist Size Size1_2 Dist1 Dist1_2 Size2_2 Dist2 Dist2_2 Size3_2 Dist3 Dist3_2 Size4_2 Dist4 Dist4_2
+@persist Scale Scale2 Scale3 InertiaMultiplier NearStarForceMultiplier UseMovingSun SimulationSize SimulationTime SunMass Sun1:entity
+#debug
+@outputs Size SunMass
+#Sun Model if using chip as sun
+@model 
+interval(100) #Default 100
+
+if(first()){
+    #entity() or SunEntity  | entity() by default, this can be changed if you want to use a separate entity for the sun
+    Sun1=entity()
+
+    SimulationTime=15       #keep at 1-25, same as below except it should work perfectly if you use a value below 1, 0.5 for example                            | Default 15
+    SimulationSize=2000     #keep at 1000-3500, i haven't tested less or higher but those values should work                                                    | Default 2000
+    UseMovingSun=0          #If you want your sun to slowly move towards the middle of the planets, not that it is incredibly slow but still has a nice effect  | Default 0
+
+#[
+    Introduction
+    
+    Simple Star System simulation e2 made by Naki | https://steamcommunity.com/id/Nakkivatti/  
+    
+    Use by spawning 4 props, each will be a planet, recommended models below
+    Wire each option from e2 to each representive prop, Planet1 to your prop that you want to use as a planet etc
+    SimulationTime works like a multiplier the higher the number the faster everything will go, and more unstable the simulation will be
+    SimulationSize is the size of the simulation area, this effects how far selected props will be able to return from, also effects the simulation if the number is too high
+    
+    After you have spawned your models check lines 16,17 and 18 if you haven't already
+    
+    When you have your settings ready spawn the e2 and wire everything up, you can also add trails if you so wish to
+    
+    Recommended Models
+    
+    Sun = models/sprops/geometry/sphere_144.mdl
+    
+    Planet1 = models/sprops/geometry/sphere_9.mdl
+    Planet2 = models/sprops/geometry/sphere_12.mdl
+    Planet3 = models/sprops/geometry/sphere_6.mdl
+    Planet4 = models/sprops/geometry/sphere_30.mdl
+    
+    Red/Yellow Star
+    1 rock planet
+    2 earth like planet
+    3 mars like planet
+    4 jupiter like planet
+    
+    #//-//# Warning #//-//#
+    
+    This e2 is not the most server friendliest e2
+    Cpu usage around 600-900
+    Ops around 350
+    
+]#
+
+    holoCreate(1)
+    holoCreate(2)
+    holoCreate(3)
+    holoCreate(4)
+    holoCreate(5)
+    holoCreate(6)
+    holoCreate(7)
+    holoCreate(8)
+    holoAlpha(1, 0)
+    holoAlpha(2, 0)
+    holoAlpha(3, 0)
+    holoAlpha(4, 0)
+    holoAlpha(5, 0)
+    holoAlpha(6, 0)
+    holoAlpha(7, 0)
+    holoAlpha(8, 0)
+    
+    holoCreate(9)
+    holoAlpha(9, 0)
+    
+    SunMass=Sun1:height()*Sun1:height()*0.5
+
+    Size=SimulationSize*SunMass/1000
+    Scale=(64*Size/50)/(SimulationTime*0.25)
+    Scale2=(Scale-Size/75)/(SimulationTime*0.25)
+    Scale3=(Scale-Size/300)/(SimulationTime*0.25)
+    InertiaMultiplier=5*SimulationTime
+    NearStarForceMultiplier=15
+    
+}
+
+if(Dist1>Size){
+    Size1_2=Dist1
+}else{
+    Size1_2=Size
+}
+
+if(Dist2>Size){
+    Size2_2=Dist2
+}else{
+    Size2_2=Size
+}
+
+if(Dist3>Size){
+    Size3_2=Dist3
+}else{
+    Size3_2=Size
+}
+
+if(Dist4>Size){
+    Size4_2=Dist4
+}else{
+    Size4_2=Size
+}
+if(Sun1){
+    Sun1:propInertia(vec(Sun1:mass()*Sun1:height()*0.5)*InertiaMultiplier)
+    Sun1:propGravity(0)
+    Sun1:setMass(SunMass)
+    if(Planet1){
+        Planet1:propInertia(vec(Planet1:mass()*0.5)*InertiaMultiplier)
+        Planet1:setMass(Planet1:height())
+        Planet1:propGravity(0)
+        TotMass1=Sun1:mass()+Planet1:mass()
+        Dist1=Sun1:pos():distance(Planet1:pos())
+        holoPos(1, Sun1:pos())
+        holoAng(1, (Planet1:pos()-Sun1:pos()):toAngle())
+
+        holoPos(2, holoEntity(1):toWorld(vec(Size1_2,0,0)))
+        
+        Dist1_2=Planet1:pos():distance(holoEntity(2):pos())
+        Planet1:applyForce((Sun1:pos()-Planet1:pos()):normalized()*(TotMass1/Scale3)*(Dist1_2/Scale)/((Dist1*0.02)/NearStarForceMultiplier))
+    }
+    if(Planet2){
+        Planet2:propInertia(vec(Planet2:mass())*InertiaMultiplier)
+        Planet2:setMass(Planet2:height())
+        Planet2:propGravity(0)
+        TotMass2=Sun1:mass()+Planet2:mass()
+        Dist2=Sun1:pos():distance(Planet2:pos())
+        holoPos(3, Sun1:pos())
+        holoAng(3, (Planet2:pos()-Sun1:pos()):toAngle())
+
+        holoPos(4, holoEntity(3):toWorld(vec(Size2_2,0,0)))
+        
+        Dist2_2=Planet2:pos():distance(holoEntity(4):pos())
+        Planet2:applyForce((Sun1:pos()-Planet2:pos()):normalized()*(TotMass2/Scale2)*(Dist2_2/Scale)/((Dist2*0.02)/NearStarForceMultiplier))
+    }
+    if(Planet3){
+        Planet3:propInertia(vec(Planet3:mass())*InertiaMultiplier)
+        Planet3:setMass(Planet3:height())
+        Planet3:propGravity(0)
+        TotMass3=Sun1:mass()+Planet3:mass()
+        Dist3=Sun1:pos():distance(Planet3:pos())
+        holoPos(5, Sun1:pos())
+        holoAng(5, (Planet3:pos()-Sun1:pos()):toAngle())
+
+        holoPos(6, holoEntity(5):toWorld(vec(Size3_2,0,0)))
+        
+        Dist3_2=Planet3:pos():distance(holoEntity(6):pos())
+        Planet3:applyForce((Sun1:pos()-Planet3:pos()):normalized()*(TotMass3/Scale2)*(Dist3_2/Scale)/((Dist3*0.02)/NearStarForceMultiplier))
+    }
+    if(Planet4){
+        Planet4:propInertia(vec(Planet4:mass())*InertiaMultiplier)
+        Planet4:setMass(Planet4:height())
+        Planet4:propGravity(0)
+        TotMass4=Sun1:mass()+Planet4:mass()
+        Dist4=Sun1:pos():distance(Planet4:pos())
+        holoPos(7, Sun1:pos())
+        holoAng(7, (Planet4:pos()-Sun1:pos()):toAngle())
+
+        holoPos(8, holoEntity(7):toWorld(vec(Size4_2,0,0)))
+        
+        Dist4_2=Planet4:pos():distance(holoEntity(8):pos())
+        Planet4:applyForce((Sun1:pos()-Planet4:pos()):normalized()*(TotMass4/Scale2)*(Dist4_2/Scale)/((Dist4*0.02)/NearStarForceMultiplier))
+    }
+    holoPos(9, ((Planet1:pos()+Planet2:pos()+Planet3:pos()+Planet4:pos())/4))
+    Targ=holoEntity(9):pos()
+    Sun1:applyForce((-(Sun1:pos()-Targ):normalized()*Sun1:mass()/(Scale*0.01))*UseMovingSun)
+}
+
