@@ -1,0 +1,205 @@
+@name Rinnegan
+@inputs EGP:wirelink
+@persist Value PD IntValue Amount Val2 Active Entities:array Prop:entity
+runOnKeys(owner(),1)
+interval(IntValue)
+
+if(first()){
+    IntValue=100
+    holoCreate(2)
+    holoCreate(3)
+    holoCreate(1000)
+    holoAlpha(2,0)
+    holoAlpha(3,0)
+    
+    holoDisableShading(2,1)
+    holoDisableShading(3,1)
+    
+    holoModel(2, "models/sprops/geometry/sphere_144.mdl")
+    holoModel(3, "models/sprops/geometry/sphere_144.mdl")
+    
+    holoMaterial(2, "models/debug/debugwhite")
+    holoMaterial(3, "models/debug/debugwhite")
+    
+    holoColor(2, vec(145))
+    holoColor(3, vec(145))
+    
+    holoModel(1000, "models/hunter/misc/sphere025x025.mdl")
+    holoColor(1000, vec(0))
+    holoAlpha(1000, 0)
+    Prop=propSpawn("models/hunter/misc/shell2x2.mdl",ang(0,0,0),1)
+    Prop:setPos(entity():pos())
+    Prop:setAlpha(0)
+    Prop:propFreeze(1)
+}
+W=egpScrW(owner())
+H=egpScrH(owner())
+
+O=owner()
+
+if(O:weapon():type()=="none"){
+
+T=O:keyPressed("t")
+
+Mouse1=O:keyAttack1()
+Mouse2=O:keyAttack2()
+G=O:keyPressed("g")
+#shinra tensei
+if(Mouse1){
+    Prop:setPos(owner():pos()+vec(0,0,owner():height()/2))
+    Prop:setAlpha(25)
+    Prop:propFreeze(1)
+    Prop:setMaterial("models/debug/debugwhite")
+    Prop:setColor(vec(215))
+    Val2=5
+    holoAlpha(2, 105)
+    holoScale(2, vec(1)*0.7)
+    holoPos(2, owner():pos()+vec(0,0,40))
+    
+    holoAlpha(3, 105)
+    holoScale(3, vec(-0.99)*0.7)
+    holoPos(3, owner():pos()+vec(0,0,40))
+    if(Amount<50){
+    Amount=(Amount+1)-Amount*0.02
+    }
+    Stop=0
+}
+
+if(!Mouse1){
+    if(!Mouse2){
+        if(!G){
+            Prop:setPos(entity():pos())
+            Prop:setAlpha(0)
+            Prop:propFreeze(1)
+            Prop:setMaterial("models/debug/debugwhite")
+            Prop:setColor(vec(215))
+        }
+    }
+    if(Amount>0){
+        Val2=Val2+1
+        holoScale(2, vec(-0.99*0.7)-Val2)
+        holoScale(3, vec(1*0.7)+Val2)
+        
+        holoAlpha(2, 105-Val2*10)
+        holoAlpha(2, 105-Val2*10)
+        IntValue=500
+        timer("stop",Amount*20)
+        
+        if(clk("stop")){
+            Stop=1
+            Amount=0
+            IntValue=100
+            timer("holoReset",200)
+        }
+        timer("find",100)
+    if(clk("find")){
+            findExcludeClass("player")
+            findInSphere(O:pos(),200*Amount*0.3)
+            Entities=findToArray()
+    } 
+    foreach(I:number, Ent:entity =Entities){
+        
+        Dir=(O:shootPos()-Ent:pos()):normalized()
+        
+        Ent:applyForce(-Dir*Ent:mass()*200*Amount)
+        Ent:plyApplyForce(-Dir*Ent:mass()*200*Amount)
+    }
+    }
+    }
+    if(G){
+    Prop:setPos(owner():pos()+vec(0,0,owner():height()/2))
+    Prop:setAlpha(25)
+    Prop:propFreeze(1)
+    Prop:setMaterial("models/debug/debugwhite")
+    Prop:setColor(vec(215))
+}
+
+if(clk("holoReset")){
+    Val2=0
+    holoAlpha(2, Val2)
+    holoAlpha(3, Val2)
+}
+#bansho tenin
+
+if(Mouse2){
+    Prop:setPos(owner():pos()+vec(0,0,owner():height()/2))
+    Prop:setAlpha(25)
+    Prop:propFreeze(1)
+    Prop:setMaterial("models/debug/debugwhite")
+    Prop:setColor(vec(215))
+    IntValue=400
+    timer("find",100)
+    if(clk("find")){
+            findExcludeClass("player")
+            findInSphere(O:pos(),1750)
+            Entities=findToArray()
+    } 
+    foreach(I:number, Ent:entity =Entities){
+        
+        Dir=(O:shootPos()-Ent:pos()):normalized()
+        if(Ent:owner()==owner()){
+        Ent:applyForce(Dir*Ent:mass()*10000)
+        Ent:plyApplyForce(Dir*Ent:mass()*10000)
+        }
+        
+    }
+    timer("intReset",100)
+}
+if(clk("intReset")){
+IntValue=100
+}
+#chibaku tensei
+if(changed(T)&T){
+    timer("planetaryDevastation",200)
+    timer("pdstop",5500)
+    Active=1
+}
+}
+if(clk("pdstop")){
+    Active=0
+}
+if(clk("planetaryDevastation")){
+    PD=1
+    holoPos(1000, O:toWorld(vec(0,0,4000)))
+    holoScale(1000, vec(2))
+    holoAlpha(1000, 255)
+    Value=0
+}
+if(PD==1){
+    IntValue=400
+    timer("find",100)
+    if(clk("find")){
+            findExcludeClass("player")
+            findInSphere(holoEntity(1000):pos(),5000)
+            Entities=findToArray()
+    } 
+    foreach(I:number, Ent:entity =Entities){
+        
+        Dir=(holoEntity(1000):pos()-Ent:pos()):normalized()
+        if(Active){
+            if(Ent:owner()==owner()){
+        Ent:applyForce(Dir*Ent:mass()*2000)
+        Ent:plyApplyForce(Dir*Ent:mass()*2000)
+        Ent:propGravity(0)
+        
+        Value++
+        if(Ent:pos():distance(holoEntity(1000):pos())<Value){
+            holoScale(1000, vec(2+Value*0.02))
+            Ent:propFreeze(1)
+            Ent:propGravity(600)
+        }
+        }
+        }else{
+            Ent:propFreeze(0)
+            Ent:propGravity(600)
+            Value=0
+            PD=0
+            holoAlpha(1000, 0)
+        }
+    }
+}else{
+    IntValue=100
+}
+
+EGP:egpText(1, "Power: "+round(Amount), vec2(-42+W/2,325+H/2))
+EGP:egpSize(1, 25)
