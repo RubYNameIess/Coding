@@ -4,20 +4,42 @@
 interval(100)
 if(first()){
     
-    Size=4
+    Size=48
     holoCreate(1000)
-    holoModel(1000, "models/sprops/geometry/sphere_144.mdl")
+    holoModel(1000, "models/holograms/icosphere3.mdl")
     holoParent(1000, Base)
-    holoMaterial(1000, "models/wireframe")
+    holoMaterial(1000, "")
     holoDisableShading(1000, 1)
     holoScale(1000, vec(Size))
+    holoAlpha(1000, 255)
+    holoColor(1000, vec(35))
     
     holoCreate(1001)
-    holoModel(1001, "models/sprops/geometry/sphere_144.mdl")
+    holoModel(1001, "models/holograms/icosphere3.mdl")
     holoParent(1001, Base)
-    holoMaterial(1001, "models/wireframe")
+    holoMaterial(1001, "")
     holoDisableShading(1001, 1)
     holoScale(1001, vec(-Size))
+    holoAlpha(1001, 75)
+    holoColor(1001, vec(35))
+    
+    holoCreate(1002)
+    holoModel(1002, "models/holograms/icosphere3.mdl")
+    holoParent(1002, Base)
+    holoMaterial(1002, "models/wireframe")
+    holoDisableShading(1002, 1)
+    holoScale(1002, vec(Size)*1.001)
+    holoAlpha(1002, 255)
+    holoColor(1002, vec(255))
+    
+    holoCreate(1003)
+    holoModel(1003, "models/holograms/icosphere3.mdl")
+    holoParent(1003, Base)
+    holoMaterial(1003, "models/wireframe")
+    holoDisableShading(1003, 1)
+    holoScale(1003, vec(-Size)*0.999)
+    holoAlpha(1003, 255)
+    holoColor(1003, vec(255))
     
 }
 if(changed(players():count())){
