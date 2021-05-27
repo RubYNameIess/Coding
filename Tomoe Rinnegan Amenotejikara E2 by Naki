@@ -1,0 +1,52 @@
+@name Tomoe Rinnegan Amenotejikara
+@outputs Target:entity R F OldPos:vector Dist
+@persist Target:entity OldPos:vector TeleportationEnabled
+runOnKeys(owner(),1)
+interval(100)
+if(first()){
+    holoCreate(1)
+    holoAlpha(1,0)
+    holoPos(1, vec(owner():pos():x(),owner():pos():y(),owner():pos():z()+ owner():height()/2))
+    holoParent(1, owner())
+    TeleportationEnabled=1
+}
+holoAng(1, ang(owner():eyeAngles():pitch()*0,owner():eyeAngles():yaw(),owner():eyeAngles():roll()*0))
+
+O=owner()
+
+if(O:weapon():type()=="none"){
+
+R=O:keyPressed("r")
+F=O:keyPressed("f")
+#G=O:keyPressed("g")
+
+Target=owner():aimEntity()
+Dist=O:shootPos():distance(O:aimPos())
+if(Dist<2750){
+if(changed(R)&R){
+    OldPos=O:pos()+vec(0,0,O:height()/2)
+    if(Target){
+        O:plySetPos(Target:pos())
+    if(Target:isPlayer()){
+        Target:plySetPos(OldPos)
+    }else{
+        Target:setPos(OldPos)
+        }
+    }
+    if(!Target&TeleportationEnabled==1){
+        O:plySetPos(O:aimPos())
+    }
+}
+
+if(changed(F)&F){
+    if(Target){
+    if(Target:isPlayer()){
+        Target:plySetPos(holoEntity(1):toWorld(vec(45,0,0)))
+    }else{
+        Target:setPos(holoEntity(1):toWorld(vec(45,0,0)))
+    }
+    }
+}
+}
+}
+
