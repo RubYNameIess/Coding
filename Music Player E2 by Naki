@@ -1,0 +1,35 @@
+@name Music Player by Naki
+@persist O:entity E:entity URL:string Vol:number
+runOnChat(1)
+interval(100)
+
+if(first()){
+    O=owner()
+    E=entity()
+    Play=0
+    Vol=1
+}
+
+LS=O:lastSaid()
+LS2=O:lastSaid():explode(" ")
+
+if(changed(LS)&LS){
+    if(LS2[1, string]=="!song"){
+        hideChat(1)
+        print("Playing "+URL)
+        if(LS2[2, string]){
+            URL=LS2[2, string]
+            Play=1
+        }
+    }
+    if(LS2[1, string]=="!vol"){
+        hideChat(1)
+        print("Volume "+Vol)
+        if(LS2[2, string]){
+            Vol=LS2[2, string]:toNumber()
+        }
+    }
+}
+if(changed(Play==1)&Play==1){
+    O:streamStart(1, Vol, URL)
+}
