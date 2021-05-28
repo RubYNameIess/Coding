@@ -1,7 +1,7 @@
 @name Nuke Warhead Version E2
 @inputs Active Timer UseTimer
 @outputs I Ready
-@persist I On Fire:string Air:string Ready Entities:array Active
+@persist I On Fire:string Air:string Ready Entities:array Active Allow
 @model models/props_phx/misc/flakshell_big.mdl
 interval(100)
 #runOnUse(1)
@@ -57,11 +57,12 @@ if(first()){
     holoScale(9, vec(0))
     Active=0
     Ready=0
-    foreach(Ind:number, Ent:entity = players()){
+    AdminMode=owner():isAdmin()
+    #foreach(Ind:number, Ent:entity = players()){
         
-        Ent:plyExtinguish()
+    #    Ent:plyExtinguish()
         
-    }
+    #}
     owner():plyExtinguish()
 }
 #if(useClk()){
@@ -120,10 +121,19 @@ if(clk("damage2")){
 }
 if(On){
     foreach(I:number, E:entity = Entities){
+        if(AdminMode==0){
         if(E:owner()==owner()){
+            Allow=1
+        }else{
+            Allow=0
+        }
+        }else{
+            Allow=1
+        }
             if(clk("sound")){
                 E:soundPlay(1,0,"*ambient/explosions/citadel_end_explosion1.wav")
             }
+        if(Allow){
         if(E:pos():distance(entity():pos())<1000*Size){
             if(E:isPlayer()){
                 E:plyIgnite()
