@@ -108,6 +108,7 @@ if(changed(Active)&Active){
 if(clk("damage")){
     findIncludeClass("player")
     findIncludeClass("prop_*")
+    findIncludeClass("wire_*")
     findInSphere(entity():pos(),6500*Size)
     Entities=findToArray()
     Kill=0
