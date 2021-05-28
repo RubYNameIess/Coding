@@ -1,0 +1,135 @@
+@name Nuke Effect E2
+@inputs Active
+@outputs I Ready
+@persist I On Fire:string Air:string Ready
+@model models/props_phx/ww2bomb.mdl
+interval(100)
+runOnKeys(owner(),1)
+if(first()){
+    
+    #models/holograms/hq_torus_thick.mdl
+    Fire="models/effects/splode_sheet"
+    Air="models/dog/eyeglass"
+    holoCreate(1)
+    holoModel(1, "models/holograms/hq_torus.mdl")
+    holoMaterial(1, Air)
+    
+    holoCreate(2)
+    holoModel(2, "models/holograms/hq_torus.mdl")
+    holoMaterial(2, "")
+    
+    holoCreate(3)
+    holoModel(3, "models/holograms/hq_torus_thick.mdl")
+    holoMaterial(3, "")
+    
+    holoCreate(4)
+    holoModel(4, "models/holograms/hq_torus_thick.mdl")
+    holoMaterial(4, "")
+    
+    holoCreate(5)
+    holoModel(5, "models/holograms/hq_cone.mdl")
+    holoMaterial(5, Fire)
+    
+    holoCreate(6)
+    holoModel(6, "models/holograms/hq_sphere.mdl")
+    holoMaterial(6, "")
+    
+    holoCreate(7)
+    holoModel(7, "models/holograms/hq_sphere.mdl")
+    holoMaterial(7, Fire)
+    
+    holoCreate(8)
+    holoModel(8, "models/holograms/hq_torus_thick.mdl")
+    holoMaterial(8, Fire)
+    
+    holoCreate(9)
+    holoModel(9, "models/holograms/hq_sphere.mdl")
+    holoMaterial(9, Fire)
+    
+    holoScale(1, vec(0))
+    holoScale(2, vec(0))
+    holoScale(3, vec(0))
+    holoScale(4, vec(0))
+    holoScale(5, vec(0))
+    holoScale(6, vec(0))
+    holoScale(7, vec(0))
+    holoScale(8, vec(0))
+    holoScale(9, vec(0))
+}
+Active=owner():keyPressed("g")
+
+#[
+    Default Big 1.3
+    Smol 0.01
+    Skybox 0.8
+    Tiny 0.005
+    Miniature 0.08
+    
+]#
+
+Size=1.3
+
+Offset=vec(0,0,25*Size)
+
+if(Active){
+    On=1
+    entity():propFreeze(1)
+    entity():setAng(ang(0,0,0))
+    entity():setAlpha(0)
+    timer("sound",300)
+}
+if(clk("sound")){
+    entity():soundPlay(750,750,"*ambient/explosions/citadel_end_explosion1.wav")
+}
+if(On){
+    timer("Off",5000)
+    I=I+15
+    holoScale(1, vec(I*2,I*2,420-I/2)*Size)
+    holoAlpha(1, 300-I/2.5)
+    
+    holoScale(2, vec(I/1.7,I/1.7,60-I/20)/1.5*Size)
+    holoAlpha(2, 255-I/3)
+    
+    holoScale(3, vec(I/3.7,I/3.7,55-I/15)/1.5*Size)
+    holoAlpha(3, 255-I/3)
+    
+    holoScale(4, vec(I/3.1,I/3.1,58-I/15)/1.5*Size)
+    holoAlpha(4, 255-I/3)
+
+    holoScale(5, vec(15+I/7,15+I/7,300+I/15)/3*Size)
+    holoAlpha(5, 450-I/3.5)
+    
+    holoScale(6, vec(I*3,I*3,250+I/10)*Size)
+    holoAlpha(6, 175-I)
+    
+    holoScale(7, vec(-15+I,-15+I,70-I/15)*Size)
+    holoAlpha(7, 400-I/3.5)
+    
+    holoScale(8, vec(25+I/25,25+I/25,40+I/25)*Size)
+    holoAlpha(8, 450-I/3)
+    
+    holoScale(9, vec(20+I/22,20+I/22,2+I/45)*Size)
+    holoAlpha(9, 450-I/3)
+    
+    holoPos(1, entity():toWorld(vec(0,0,255/1.5-I/3)*Size)+Offset)
+    holoPos(2, entity():toWorld(vec(0,0,1750/1.5-I/12)*Size)+Offset)
+    
+    holoPos(3, entity():toWorld(vec(0,0,1300/1.5-I/12)*Size)+Offset)
+    holoPos(4, entity():toWorld(vec(0,0,720/1.5-I/12)*Size)+Offset)
+    
+    holoPos(5, entity():toWorld(vec(0,0,600)*Size)+Offset)
+    holoPos(6, entity():toWorld(vec(0,0,0)*Size)+Offset)
+    
+    holoPos(7, entity():toWorld(vec(0,0,180/1.5-I/5)*Size)+Offset)
+    holoPos(8, entity():toWorld(vec(0,0,1700/1.5+I/5)*Size)+Offset)
+    
+    holoPos(9, entity():toWorld(vec(0,0,1745/1.5+I/5)*Size)+Offset)
+    
+}
+if(clk("Off")){
+    entity():propDelete()
+}
+
+if(dupefinished()){
+    reset()
+}
