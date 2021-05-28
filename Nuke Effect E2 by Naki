@@ -1,13 +1,12 @@
 @name Nuke Effect E2
 @inputs Active
 @outputs I Ready
-@persist I On Fire:string Air:string Ready
+@persist I On Fire:string Air:string Ready Entities:array
 @model models/props_phx/ww2bomb.mdl
 interval(100)
 runOnKeys(owner(),1)
 if(first()){
     
-    #models/holograms/hq_torus_thick.mdl
     Fire="models/effects/splode_sheet"
     Air="models/dog/eyeglass"
     holoCreate(1)
@@ -55,19 +54,31 @@ if(first()){
     holoScale(7, vec(0))
     holoScale(8, vec(0))
     holoScale(9, vec(0))
+    
+    foreach(Ind:number, Ent:entity = players()){
+        
+        Ent:plyExtinguish()
+        
+    }
+    owner():plyExtinguish()
 }
 Active=owner():keyPressed("g")
 
 #[
-    Default Big 1.3
-    Smol 0.01
+    Default Massive 6
+    Default Large 4
+    Default Big 3
+    Default Medium 2.2
+    Default Small 1.3
+    
     Skybox 0.8
-    Tiny 0.005
     Miniature 0.08
+    Smol 0.01
+    Tiny 0.005
     
 ]#
 
-Size=1.3
+Size=6
 
 Offset=vec(0,0,25*Size)
 
@@ -77,12 +88,57 @@ if(Active){
     entity():setAng(ang(0,0,0))
     entity():setAlpha(0)
     timer("sound",300)
+    timer("damage",100)
+    timer("damage2",2000)
+    
 }
-if(clk("sound")){
-    entity():soundPlay(750,750,"*ambient/explosions/citadel_end_explosion1.wav")
+if(clk("damage")){
+    findIncludeClass("player")
+    findIncludeClass("prop_*")
+    findInSphere(entity():pos(),6500*Size)
+    Entities=findToArray()
+    Kill=0
+}
+if(clk("damage2")){
+    Kill=1
 }
 if(On){
-    timer("Off",5000)
+    foreach(I:number, E:entity = Entities){
+        if(E:owner()==owner()){
+            if(clk("sound")){
+                E:soundPlay(1,0,"*ambient/explosions/citadel_end_explosion1.wav")
+            }
+        if(E:pos():distance(entity():pos())<1000*Size){
+            if(E:isPlayer()){
+                E:plyIgnite()
+                E:plySetHealth(0)
+            }else{
+                E:ignite()
+                E:propBreak()
+#                E:propDelete()
+            }
+        }
+        if(Kill==1){
+            if(E:isPlayer()){
+                E:plyIgnite()
+                E:plySetHealth(0)
+            }else{
+                E:ignite()
+                E:propBreak()
+            }
+        }else{
+            if(E:isPlayer()){
+                E:plyIgnite()
+            }else{
+                E:ignite()
+            }
+        }
+        if(!E:isAlive()){
+            E:plyExtinguish()
+        }
+    }
+    }
+    timer("Off",8000)
     I=I+15
     holoScale(1, vec(I*2,I*2,420-I/2)*Size)
     holoAlpha(1, 300-I/2.5)
@@ -124,7 +180,6 @@ if(On){
     holoPos(8, entity():toWorld(vec(0,0,1700/1.5+I/5)*Size)+Offset)
     
     holoPos(9, entity():toWorld(vec(0,0,1745/1.5+I/5)*Size)+Offset)
-    
 }
 if(clk("Off")){
     entity():propDelete()
