@@ -1,4 +1,4 @@
-@name Nuke Effect E2
+@name Nuke E2
 @inputs Active
 @outputs I Ready
 @persist I On Fire:string Air:string Ready Entities:array
