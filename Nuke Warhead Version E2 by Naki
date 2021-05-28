@@ -1,7 +1,7 @@
 @name Nuke Warhead Version E2
 @inputs Active Timer UseTimer
-@outputs I Ready
-@persist I On Fire:string Air:string Ready Entities:array Active Allow
+@outputs I Ready AdminMode Allow
+@persist I On Fire:string Air:string Ready Entities:array Active Allow AdminMode
 @model models/props_phx/misc/flakshell_big.mdl
 interval(100)
 #runOnUse(1)
@@ -130,10 +130,10 @@ if(On){
         }else{
             Allow=1
         }
+        if(Allow){
             if(clk("sound")){
                 E:soundPlay(1,0,"*ambient/explosions/citadel_end_explosion1.wav")
             }
-        if(Allow){
         if(E:pos():distance(entity():pos())<1000*Size){
             if(E:isPlayer()){
                 E:plyIgnite()
