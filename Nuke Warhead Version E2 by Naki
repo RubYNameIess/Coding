@@ -4,7 +4,7 @@
 @persist I On Fire:string Air:string Ready Entities:array Active
 @model models/props_phx/misc/flakshell_big.mdl
 interval(100)
-runOnUse(1)
+#runOnUse(1)
 if(first()){
     entity():propDrag(0)
     entity():propInertia(vec(0))
@@ -64,9 +64,9 @@ if(first()){
     }
     owner():plyExtinguish()
 }
-if(useClk()){
-    timer("ready",5000)
-}
+#if(useClk()){
+#    timer("ready",5000)
+#}
 if(changed(UseTimer)&UseTimer){
     timer("ready",Timer*1000)
 }
