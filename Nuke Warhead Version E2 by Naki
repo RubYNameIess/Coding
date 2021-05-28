@@ -68,7 +68,7 @@ if(useClk()){
     timer("ready",5000)
 }
 if(changed(UseTimer)&UseTimer){
-    timer("ready",Timer)
+    timer("ready",Timer*1000)
 }
 if(clk("ready")){
     Ready=1
