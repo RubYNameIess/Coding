@@ -1,0 +1,172 @@
+@name NPMC Cloak Module
+@inputs Active
+@persist MaxSize On Mat:string [Col1 Col2 Col3 Col4 Col5]:vector A CloakingTime
+@model models/sprops/cuboids/height24/size_1/cube_24x24x24.mdl
+interval(100)
+
+if(first()){
+    
+    #[
+        Naki's Portable Mech Components
+        
+        Cloak Module
+        
+        Wire Active from chip to a button that you want to use to activate the cloak
+        
+        Change the MaxSize according to the size of your mech/build
+        Same for colors if you want to
+        
+        The time that it takes to cloak and uncloak is editable too, the longer it takes the smoother it will be Default is 35
+    ]#
+    
+    entity():setAlpha(0)
+    
+    holoCreate(1)
+    holoCreate(2)
+    holoCreate(3)
+    
+    holoParent(1, entity())
+    holoParent(2, entity())
+    holoParent(3, entity())
+    
+    holoAlpha(2, 45)
+    holoColor(2, vec(0,0,175))
+    
+    holoModel(1, "models/pac/default.mdl")
+    holoMaterial(1, "models/effects/muzzleflash/blurmuzzle")
+    holoDisableShading(1,1)
+    holoAlpha(1, 255)
+    
+    holoModel(3, "models/pac/default.mdl")
+    holoMaterial(3, "engine/depthwrite")
+    holoDisableShading(3,1)
+    holoAlpha(3, 255)
+    
+    
+    holoModel(2, "models/pac/default.mdl")
+    holoMaterial(2, "")
+    holoDisableShading(2,1)
+    
+    
+    holoCreate(4)
+    holoModel(4, "models/sprops/geometry/fhex_24.mdl")
+    holoParent(4, entity())
+    holoPos(4, entity():toWorld(vec(0,0,24/2-3)))
+    holoAng(4, entity():toWorld(ang(0,0,90)))
+    holoScale(4, vec(1,1.75,1))
+    
+    holoCreate(5)
+    holoModel(5, "models/sprops/geometry/fhex_24.mdl")
+    holoParent(5, entity())
+    holoPos(5, entity():toWorld(vec(0,0,-24/2+3)))
+    holoAng(5, entity():toWorld(ang(0,0,90)))
+    holoScale(5, vec(1,1.75,1))
+    
+    holoCreate(6)
+    holoModel(6, "models/sprops/misc/fittings/cred_12_9_tall.mdl")
+    holoParent(6, entity())
+    holoPos(6, entity():toWorld(vec(0,0,24/4.5)))
+    holoAng(6, entity():toWorld(ang(0,0,180)))
+    holoScale(6, vec(2.1,2.1,0.3)*0.7)
+    
+    holoCreate(7)
+    holoModel(7, "models/sprops/misc/fittings/cred_12_9_tall.mdl")
+    holoParent(7, entity())
+    holoPos(7, entity():toWorld(vec(0,0,-24/4.5)))
+    holoAng(7, entity():toWorld(ang(0,0,0)))
+    holoScale(7, vec(2.1,2.1,0.3)*0.7)
+    
+    holoCreate(8)
+    holoModel(8, "models/sprops/geometry/sphere_18.mdl")
+    holoParent(8, entity())
+    holoPos(8, entity():toWorld(vec(0,0,0)))
+    holoAng(8, entity():toWorld(ang(0,0,0)))
+    holoScale(8, vec(1,1,1)*0.9)
+    
+    holoCreate(9)
+    holoModel(9, "models/sprops/geometry/fring_24.mdl")
+    holoParent(9, entity())
+    holoPos(9, entity():toWorld(vec(0,0,0)))
+    holoAng(9, entity():toWorld(ang(0,0,0)))
+    holoScale(9, vec(1,1,1)*0.9)
+    
+    holoCreate(10)
+    holoModel(10, "models/sprops/geometry/fring_24.mdl")
+    holoParent(10, entity())
+    holoPos(10, entity():toWorld(vec(0,0,0)))
+    holoAng(10, entity():toWorld(ang(0,0,90)))
+    holoScale(10, vec(1,1.2,1)*0.85)
+    
+    holoCreate(11)
+    holoModel(11, "models/sprops/rectangles/size_2/rect_12x18x3.mdl")
+    holoParent(11, entity())
+    holoPos(11, entity():toWorld(vec(-11,0,0)))
+    holoAng(11, entity():toWorld(ang(0,90,90)))
+    holoScale(11, vec(0.8,1,0.65)*0.7)
+    
+    holoCreate(12)
+    holoModel(12, "models/sprops/geometry/fhex_12.mdl")
+    holoParent(12, entity())
+    holoPos(12, entity():toWorld(vec(-11.25,0,0)))
+    holoAng(12, entity():toWorld(ang(0,90,0)))
+    holoScale(12, vec(1,0.6,1)*0.7)
+    
+    Mat="models/debug/debugwhite"
+    Col1=vec(75,75,75)
+    Col2=vec(125,125,125)
+    Col3=vec(25,25,25)
+    Col4=vec(0,175,255)
+    Col5=vec(45,45,45)
+    
+    MaxSize=75
+    CloakingTime=35
+    
+    holoMaterial(4, Mat)
+    holoMaterial(5, Mat)
+    holoMaterial(6, Mat)
+    holoMaterial(7, Mat)
+    holoMaterial(8, Mat)
+    holoMaterial(9, Mat)
+    holoMaterial(10, Mat)
+    holoMaterial(11, Mat)
+    holoMaterial(12, Mat)
+    
+    holoColor(4, Col2)
+    holoColor(5, Col2)
+    holoColor(6, Col3)
+    holoColor(7, Col3)
+    holoColor(8, Col4)
+    holoColor(9, Col5)
+    holoColor(10, Col5)
+    holoColor(11, Col2)
+    holoColor(12, Col1)
+    
+}
+holoClipEnabled(1,1)
+holoClipEnabled(2,1)
+holoClipEnabled(3,1)
+holoClip(1,1,entity():toWorld(vec(-8+A,0,0)*MaxSize),entity():forward(),1)
+holoClip(2,1,entity():toWorld(vec(-8+A,0,0)*MaxSize),entity():forward(),1)
+holoClip(3,1,entity():toWorld(vec(-8+A,0,0)*MaxSize),entity():forward(),1)
+
+if(changed(Active)&Active){
+    On=1
+}
+if(changed(!Active)&!Active){
+    On=0
+}
+if(On){
+    holoScale(1, vec(1)*MaxSize)
+    holoScale(2, vec(-1)*MaxSize)
+    holoScale(3, vec(1)*MaxSize)
+    if(A>0){
+        A=A-16/CloakingTime
+    }
+}else{
+    holoScale(1, vec(1)*MaxSize)
+    holoScale(2, vec(-1)*MaxSize)
+    holoScale(3, vec(1)*MaxSize)
+    if(A<16){
+        A=A+16/CloakingTime
+    }
+}
