@@ -1,0 +1,76 @@
+@name Forcefield
+@inputs Active
+@persist Targets:array PlayerColor:vector Val Val2 Size Size2 Col:vector Alpha MDL:string MDL2:string Mat:string Prop:entity
+interval(100)
+if(first()){
+    
+    propDeleteAll()
+    
+    Size2=5
+    Size=0
+    Col=vec(0,0,180)
+    Alpha=5
+    MDL="models/sprops/geometry/fhex_108.mdl"
+    MDL2="models/pac/default.mdl"
+    Mat="models/debug/debugwhite"
+    holoCreate(9000)
+    holoModel(9000,MDL2)
+    holoMaterial(9000,Mat)
+    holoScale(9000,vec(Size2*100))
+    holoColor(9000, Col)
+    holoPos(9000, entity():toWorld(vec(0,0,0)))
+    holoParent(9000, entity())
+    holoDisableShading(9000,1)
+    
+    holoCreate(9001)
+    holoModel(9001,MDL2)
+    holoMaterial(9001,Mat)
+    holoScale(9001,vec(-Size2*100))
+    holoColor(9001, Col)
+    holoPos(9001, entity():toWorld(vec(0,0,0)))
+    holoParent(9001, entity())
+    holoDisableShading(9001,1)
+    
+}
+
+if(changed(Targets:count())){
+propDeleteAll()
+timer("find",500)
+timer("find2",750)
+}
+if(clk("find")){
+    #findExcludeEntity(owner())
+    findByClass("player")
+    Targets=findToArray()
+}
+if(Active){
+foreach(I:number, Ent:entity = Targets){
+
+    holoCreate(I)
+    holoScale(I, vec(0,0,0))
+    holoAng(I, (entity():pos()-Ent:pos()):toAngle())
+    holoAlpha(I, 0)
+    holoDisableShading(I, 1)
+    holoPos(I, entity():toWorld(vec(0,0,0)))
+    
+    holoCreate(I+1000)
+    holoScale(I+1000, vec(0,0,0))
+    holoAng(I+1000, holoEntity(I):toWorld(ang(0,90,0)))
+    holoAlpha(I+1000, 255)
+    holoDisableShading(I+1000, 1)
+    holoPos(I+1000, holoEntity(I):toWorld(vec(-Size2*78,0,0)))
+    
+    if(clk("find2")){
+    Prop=propSpawn(MDL,holoEntity(I+1000):angles(),1)
+    }
+    Prop:setPos(holoEntity(I+1000):pos())
+    Prop:setAng(holoEntity(I+1000):toWorld(ang(0,0,0)))
+    Prop:setAlpha(0)
+}
+holoAlpha(9000, Alpha)
+holoAlpha(9001, Alpha)
+}else{
+holoAlpha(9000, 0)
+holoAlpha(9001, 0)
+propDeleteAll()
+}
