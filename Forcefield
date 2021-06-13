@@ -1,6 +1,6 @@
 @name Forcefield
 @inputs Active
-@persist Targets:array PlayerColor:vector Val Val2 Size Size2 Col:vector Alpha MDL:string MDL2:string Mat:string Prop:entity
+@persist Targets:array Val Size Size2 Col:vector Alpha MDL:string MDL2:string Mat:string Prop:entity DeployTime
 interval(100)
 if(first()){
     
@@ -9,10 +9,13 @@ if(first()){
     Size2=5
     Size=0
     Col=vec(0,0,180)
-    Alpha=5
-    MDL="models/sprops/geometry/fhex_108.mdl"
+    Alpha=15
+    MDL="models/sprops/rectangles/size_8/rect_192x192x3.mdl"
     MDL2="models/pac/default.mdl"
     Mat="models/debug/debugwhite"
+    
+    DeployTime=3
+    
     holoCreate(9000)
     holoModel(9000,MDL2)
     holoMaterial(9000,Mat)
@@ -34,16 +37,25 @@ if(first()){
 }
 
 if(changed(Targets:count())){
-propDeleteAll()
-timer("find",500)
-timer("find2",750)
+timer("activate",100)
+}
+if(clk("activate")){
+    propDeleteAll()
+    timer("find",500)
+    timer("find2",750)
 }
 if(clk("find")){
     #findExcludeEntity(owner())
     findByClass("player")
     Targets=findToArray()
 }
+if(changed(Active)&Active){
+timer("activate",100)
+}
 if(Active){
+if(Val<100){
+Val=Val+100/DeployTime
+}
 foreach(I:number, Ent:entity = Targets){
 
     holoCreate(I)
@@ -64,13 +76,17 @@ foreach(I:number, Ent:entity = Targets){
     Prop=propSpawn(MDL,holoEntity(I+1000):angles(),1)
     }
     Prop:setPos(holoEntity(I+1000):pos())
-    Prop:setAng(holoEntity(I+1000):toWorld(ang(0,0,0)))
+    Prop:setAng(holoEntity(I+1000):toWorld(ang(0,0,90)))
     Prop:setAlpha(0)
 }
-holoAlpha(9000, Alpha)
-holoAlpha(9001, Alpha)
+holoAlpha(9000, Alpha*Val/100)
+holoAlpha(9001, Alpha*Val/100)
 }else{
-holoAlpha(9000, 0)
-holoAlpha(9001, 0)
+holoAlpha(9000, Alpha*Val/100)
+holoAlpha(9001, Alpha*Val/100)
 propDeleteAll()
+if(Val>0){
+Val=Val-100/DeployTime
+}
+
 }
