@@ -34,6 +34,23 @@ if(first()){
     holoParent(9001, entity())
     holoDisableShading(9001,1)
     
+    holoCreate(9002)
+    holoModel(9002,MDL2)
+    holoMaterial(9002, "models/spawn_effect")
+    holoScale(9002,vec(Size2*101))
+    holoColor(9002, vec(255))
+    holoPos(9002, entity():toWorld(vec(0,0,0)))
+    holoParent(9002, entity())
+    holoDisableShading(9002,1)
+    
+    holoCreate(9003)
+    holoModel(9003,MDL2)
+    holoMaterial(9003, "models/spawn_effect")
+    holoScale(9003,vec(-Size2*100))
+    holoColor(9003, vec(255))
+    holoPos(9003, entity():toWorld(vec(0,0,0)))
+    holoParent(9003, entity())
+    holoDisableShading(9003,1)
 }
 
 if(changed(Targets:count())){
@@ -43,6 +60,8 @@ if(clk("activate")){
     propDeleteAll()
     timer("find",500)
     timer("find2",750)
+    holoAlpha(9002, 255)
+    holoAlpha(9003, 255)
 }
 if(clk("find")){
     #findExcludeEntity(owner())
@@ -84,6 +103,8 @@ holoAlpha(9001, Alpha*Val/100)
 }else{
 holoAlpha(9000, Alpha*Val/100)
 holoAlpha(9001, Alpha*Val/100)
+holoAlpha(9002, 0)
+holoAlpha(9003, 0)
 propDeleteAll()
 if(Val>0){
 Val=Val-100/DeployTime
