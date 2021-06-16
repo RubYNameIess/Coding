@@ -115,3 +115,6 @@ if(Fire){
     holoScale(2,vec(0))
     holoAlpha(2,0)
 }
+if(dupefinished()){
+    reset()
+}
