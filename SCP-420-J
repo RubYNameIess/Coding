@@ -1,0 +1,86 @@
+@name SCP-420-J
+@persist Used Val Right Left On Target:entity Players:array Ang
+@outputs Target:entity
+@model models/props_c17/TrapPropeller_Lever.mdl
+runOnUse(1)
+interval(100)
+if(first()){
+holoCreate(1)
+holoModel(1, "models/props_debris/concrete_column001a_chunk01.mdl")
+holoMaterial(1, "")
+holoScale(1, vec(0.11,0.11,0.15))
+holoAng(1, entity():toWorld(ang(0,0,90)))
+holoPos(1, entity():toWorld(vec(0,2,0)))
+holoParent(1, entity())
+entity():setAlpha(255)
+entity():setMaterial("Models/effects/vol_light001")
+On=0
+Used=0
+Right=1
+}
+if(useClk()){
+    if(Used==0){
+        findIncludeClass("player")
+        findInSphere(entity():pos(),250)
+        Target=findClosest(entity():pos())
+        
+        findExcludeEntity(Target)
+        findByClass("player")
+        Players=findToArray()
+        
+        holoCreate(2)
+        holoVisible(2, Players, 0)
+        holoVisible(2, Target, 1)
+        
+        holoModel(2, "models/sprops/geometry/sphere_18.mdl")
+        holoMaterial(2, "models/props_c17/frostedglass_01a")
+        holoScale(2, vec(-2))
+        
+    entity():setAlpha(0)
+    timer("remove",30000)
+    Used=1
+    holoAlpha(1,0)
+    entity():streamStart(1,"https://www.dropbox.com/s/t7a1i2jh0476boo/scp420j.mp3?dl=1")
+    Value=Target:health()+50
+    Target:plySetHealth(Value)
+    On=1
+    }
+}
+if(clk("remove")){
+    timer("removee2",200)
+    On=0
+    Target:plySetAng(ang(owner():eyeAngles():pitch(),owner():eyeAngles():yaw(),0))
+}
+if(clk("removee2")){
+    Target:plySetAng(ang(owner():eyeAngles():pitch(),owner():eyeAngles():yaw(),0))
+    entity():propDelete()
+}
+if(On){
+    if(Val<15){
+        if(Right){
+            Val=Val+1
+        }
+    }
+    if(Val>-15){
+        if(Left){
+            Val=Val-1
+        }
+    }
+    if(Val==15){
+        Right=0
+        Left=1
+    }
+    if(Val==-15){
+        Right=1
+        Left=0
+    }
+    Target:plySetAng(owner():toWorld(ang(0,0,Val/5)))
+}
+if(duped()){
+    entity():propDelete()
+}
+Ang++
+holoPos(2, Target:shootPos())
+holoAng(2, ang(Ang*5,Ang*3,0))
+
+
