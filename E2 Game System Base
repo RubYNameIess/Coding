@@ -1,0 +1,84 @@
+@name Game Base
+@persist Players:array GameName:string Hidden InvOpen AddPoints Points LastSpoke:string
+interval(100)
+runOnKeys(Players,1)
+runOnChat(1)
+
+LS2=lastSpoke():lastSaid():explode(" ")
+
+if(first()){
+    Players=array()
+    GameName="name"
+    Hidden=0
+    InvOpen=0
+}
+
+if(chatClk()){
+if(LS2[1,string]:lower()=="/join"){
+    hideChat(1)
+    if(LS2[2,string]:lower()==GameName){
+        hideChat(1)
+        timer("join",500)
+        LastSpoke=lastSpoke():name()
+    }
+}
+foreach(I,E:entity=Players){
+    if(LS2[1,string]=="/points"){
+        hideChat(1)
+        timer("points",500)
+        LastSpoke=lastSpoke():name()
+    }
+}
+}
+if(clk("points")){
+    concmd("say /me "+LastSpoke+" You have currently "+Points+" points.")
+    timer("lastspokereset",200)
+}
+if(clk("join")){
+    Players:pushEntity(lastSpoke())
+    if(Hidden==1){
+        print(LastSpoke+" has joined "+GameName)
+    }
+    if(Hidden==0){
+        concmd("say /me : "+LastSpoke+" has joined "+GameName)
+    }
+    timer("lastspokereset",200)
+}
+if(keyClkPressed()=="i"){
+foreach(I,E:entity=Players){
+    if(E:keyPressed("i")){
+        InvOpen=!InvOpen
+    if(InvOpen==1){
+    #print(E:name()+" has opened inventory.")
+    holoCreate(I+1)
+    holoPos(I+1, E:shootPos())
+    holoAng(I+1, ang(0,E:eyeAngles():yaw(),0))
+    holoAlpha(I+1, 0)
+    
+    holoCreate(I+2)
+    holoPos(I+2, holoEntity(I+1):toWorld(vec(25,0,-E:height()/5)))
+    holoAng(I+2, ang(-75,holoEntity(I+1):angles():yaw(),0))
+    holoAlpha(I+2, 255)
+    }else{
+    #print(E:name()+" has closed inventory.")
+    holoAlpha(I+1, 0)
+    holoAlpha(I+2, 0)
+    }
+    }
+}
+}
+
+foreach(I,E:entity=Players){
+    if(AddPoints==0){
+    timer("dailypoints",60000*1)
+    AddPoints=1
+    }
+    if(clk("dailypoints")){
+        AddPoints=0
+        Points=Points+25
+        concmd("say /me "+E:name()+" You have recieved +25 points for playing this game!")
+    }
+}
+if(clk("lastspokereset")){
+    LastSpoke=""
+}
