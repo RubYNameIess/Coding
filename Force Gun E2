@@ -1,10 +1,11 @@
 @name Force Gun
 @inputs Charge
 @outputs ReloadTime ChargeLevel
-@persist ChargeLevel ChargeTime Entities:array ShockwaveMDL:string AreaMDL:string EffectMat:string ShockwaveMat:string Size Ready I Fire Find PowerOn
+@persist ChargeLevel ChargeTime PropsArray:array Entities:array ShockwaveMDL:string AreaMDL:string EffectMat:string ShockwaveMat:string Size Ready I Fire Find PowerOn
 @model models/sprops/misc/tubes/size_2/tube_24x30.mdl
 interval(100)
 if(first()){
+    PropsArray=array()
     ChargeTime=50
     ShockwaveMDL="models/hunter/misc/shell2x2a.mdl"
     AreaMDL="models/hunter/misc/cone1x1.mdl"
@@ -55,7 +56,9 @@ if(first()){
 }
 if(changed(Charge)&Charge){
 PowerOn=1
-timer("readytoshoot",500)
+}
+if(changed(Charge)&!Charge){
+PowerOn=0
 }
 if(clk("readytoshoot")){
     PowerOn=0
@@ -77,10 +80,15 @@ if(ChargeLevel<100){
     }
     }
     foreach(I,E:entity=Entities){
-        E:applyForce(vec(0,0,(E:mass()*15)))
-        E:applyAngForce(ang(randint(-125,125),randint(-125,125),randint(-125,125)))
-        E:propGravity(0)
-        E:propInertia(vec(0))
+        PropsArray:pushEntity(E)
+    }
+    foreach(I1,E1:entity=PropsArray){
+        if(E1:isValid()){
+        #E1:applyForce(vec(0,0,(E1:mass()*15)))
+        E1:applyAngForce(ang(randint(-125,125),randint(-125,125),randint(-125,125)))
+        E1:propGravity(0)
+        E1:propInertia(vec(0))
+        }
     }
 }
 Ready=1
@@ -93,9 +101,11 @@ if(Ready==1){
 }
 }
 if(clk("fire")){
-    foreach(I,E:entity=Entities){
+    foreach(I,E:entity=PropsArray){
+    if(E:isValid()){
         E:applyForce((-((entity():pos()-E:pos()):normalized())*ChargeLevel)*E:mass()*100)
         E:propGravity(600)
+    }
     }
     holoAlpha(1,0)
     timer("stop",300)
@@ -105,6 +115,11 @@ if(clk("stop")){
     ChargeLevel=0
     Fire=0
     Find=0
+    foreach(I,E:entity=PropsArray){
+    if(E:isValid()){
+        PropsArray:removeEntity(E:id())
+    }
+    }
 }
 if(Fire){
     I=I+0.3*3
@@ -117,4 +132,5 @@ if(Fire){
 }
 if(dupefinished()){
     reset()
+}
 }
