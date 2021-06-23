@@ -6,6 +6,8 @@ interval(100)
 if(first()){
   
     entity():setAlpha(0)
+    entity():setNoCollideAll(1)
+    
     holoCreate(1)
     holoModel(1, "models/props_combine/combine_door01.mdl")
     holoPos(1, entity():toWorld(vec(0,1,-12.5)))
