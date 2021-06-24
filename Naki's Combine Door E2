@@ -1,5 +1,5 @@
 @name Naki's Combine Door
-@inputs A
+@inputs Button1 Button2
 @persist Open Prop:entity Ready
 @model models/sprops/cuboids/height12/size_5/cube_96x60x12.mdl
 interval(100)
@@ -17,8 +17,12 @@ if(first()){
     
     propDeleteAll()
 }
+if(changed(Button1|Button2)&Button1|Button2){
+A=1
+}
 if(Ready==0){
 if(changed(A)&A){
+    A=0
     timer("ready",4000)
     Ready=1
     if(Open==0){
