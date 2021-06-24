@@ -6,7 +6,7 @@ interval(100)
 if(first()){
   
     entity():setAlpha(0)
-    entity():setNoCollideAll(1)
+    entity():setNoCollideAll()
     
     holoCreate(1)
     holoModel(1, "models/props_combine/combine_door01.mdl")
@@ -36,4 +36,7 @@ if(changed(A)&A){
 }
 if(clk("ready")){
     Ready=0
+}
+if(dupefinished()){
+    reset()
 }
