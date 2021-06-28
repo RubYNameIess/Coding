@@ -1,0 +1,18 @@
+@name E2 Syntax Color Editor List
+
+#hello = #Comment
+#something = #Constant
+#DoubleClkMe DoubleClkMe = #Dblckhighlight
+@trigger = #Directive
+createWire = #Function
+function = #Keyword
+err0r = #Notfound
+12345 = #Number
+{[]==()} = #Operator
+#something = #Ppcommand
+"this is text" = #string
+A[1,TypeName:entity] = #Typename
+function func = #Userfunction
+Variable = #Variable
+
+DoubleClkMe
