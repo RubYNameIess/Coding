@@ -1,0 +1,201 @@
+@name Dragon Base
+@inputs Seat:entity
+@persist Ready Size
+interval(100)
+if(first()){
+    
+    Size=10
+    
+    
+    timer("holoLoad",100)
+}
+if(clk("holoLoad")){
+holoCreate(9999)#Base
+holoAlpha(9999,0)
+timer("tail",200)    
+}
+
+
+
+if(clk("tail")){
+    for(I=1,6){ #from base to tail end
+        holoCreate(I)
+        holoModel(I,"models/sprops/misc/bone_from_x.mdl")
+        holoMaterial(I,"models/debug/debugwhite")
+    }
+    
+        holoPos(1,holoEntity(9999):toWorld(vec(0,0,0)*Size))
+        holoPos(2,holoEntity(1):toWorld(vec(20,0,0)*Size))
+        holoPos(3,holoEntity(2):toWorld(vec(20,0,0)*Size))
+        holoPos(4,holoEntity(3):toWorld(vec(20,0,0)*Size))
+        holoPos(5,holoEntity(4):toWorld(vec(20,0,0)*Size))
+        holoPos(6,holoEntity(5):toWorld(vec(20,0,0)*Size))
+        
+        holoParent(1,9999)
+        holoParent(2,1)
+        holoParent(3,2)
+        holoParent(4,3)
+        holoParent(5,4)
+        holoParent(6,5)
+    print("tail holos loaded [6]")
+timer("torso",200)    
+}
+
+
+
+if(clk("torso")){
+for(I=7,8){ #from base to neck start
+        holoCreate(I)
+        holoModel(I,"models/sprops/misc/bone_from_x.mdl")
+        holoMaterial(I,"models/debug/debugwhite")
+    }
+        holoPos(7,holoEntity(9999):toWorld(vec(0,0,0)*Size))
+        holoPos(8,holoEntity(7):toWorld(vec(21,0,0)*Size))
+
+        holoParent(7,9999)
+        holoParent(8,7)
+    print("torso holos loaded [2]")
+timer("wingright",200)    
+}
+
+
+
+if(clk("wingright")){
+for(I=9,16){ #from base to neck start
+        holoCreate(I)
+        holoModel(I,"models/sprops/misc/bone_from_x.mdl")
+        holoMaterial(I,"models/debug/debugwhite")
+    }
+        holoPos(9,holoEntity(8):toWorld(vec(5,3,0)*Size*1.5))
+        holoPos(10,holoEntity(9):toWorld(vec(12,0,0)*Size*1.5))
+        holoPos(11,holoEntity(10):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(12,holoEntity(10):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(13,holoEntity(10):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(14,holoEntity(11):toWorld(vec(24,0,0)*Size*1.5))
+        holoPos(15,holoEntity(12):toWorld(vec(24,0,0)*Size*1.5))
+        holoPos(16,holoEntity(13):toWorld(vec(24,0,0)*Size*1.5))
+
+        holoParent(9,8)
+        holoParent(10,9)
+        holoParent(11,10)
+        holoParent(12,10)
+        holoParent(13,10)
+        holoParent(14,11)
+        holoParent(15,12)
+        holoParent(16,13)
+    print("right wing holos loaded [8]")
+timer("leftwing",200)    
+}
+
+
+if(clk("wingright")){
+for(I=17,24){ #from base to neck start
+        holoCreate(I)
+        holoModel(I,"models/sprops/misc/bone_from_x.mdl")
+        holoMaterial(I,"models/debug/debugwhite")
+    }
+        holoPos(17,holoEntity(8):toWorld(vec(5,-3,0)*Size*1.5))
+        holoPos(18,holoEntity(17):toWorld(vec(12,0,0)*Size*1.5))
+        holoPos(19,holoEntity(18):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(20,holoEntity(18):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(21,holoEntity(18):toWorld(vec(18,0,0)*Size*1.5))
+        holoPos(22,holoEntity(19):toWorld(vec(24,0,0)*Size*1.5))
+        holoPos(23,holoEntity(20):toWorld(vec(24,0,0)*Size*1.5))
+        holoPos(24,holoEntity(21):toWorld(vec(24,0,0)*Size*1.5))
+
+        holoParent(17,8)
+        holoParent(18,17)
+        holoParent(19,18)
+        holoParent(20,18)
+        holoParent(21,18)
+        holoParent(22,19)
+        holoParent(23,20)
+        holoParent(24,21)
+    print("left wing holos loaded [8]")
+timer("done",200)    
+}
+
+
+
+if(clk("done")){
+Ready=1
+print("done loading holo skeleton")  
+}
+
+if(Ready){
+    
+    holoPos(9999, Seat:toWorld(vec(0,-45,-15)))
+
+holoScale(1,vec(1.7,0.9*0.4,1*0.4)*Size)
+holoScale(2,vec(1.7,0.85*0.4,0.95*0.4)*Size)
+holoScale(3,vec(1.7,0.8*0.4,0.9*0.4)*Size)
+holoScale(4,vec(1.7,0.75*0.4,0.85*0.4)*Size)
+holoScale(5,vec(1.7,0.7*0.4,0.8*0.4)*Size)
+holoScale(6,vec(1.7,0.65*0.4,0.75*0.4)*Size)
+
+holoScale(7,vec(1.85,0.8*0.5,0.9*0.5)*Size)
+holoScale(8,vec(1.85,0.83*0.6,0.9*0.6)*Size)
+
+holoScale(9, vec(1,0.3,0.1)*Size*1.5)
+holoScale(10, vec(1.5,0.3,0.1)*Size*1.5)
+holoScale(11, vec(2,0.2,0.1)*Size*1.5)
+holoScale(12, vec(2,0.2,0.1)*Size*1.5)
+holoScale(13, vec(2,0.2,0.1)*Size*1.5)
+holoScale(14, vec(1.6,0.2,0.1)*Size*1.5)
+holoScale(15, vec(1.6,0.2,0.1)*Size*1.5)
+holoScale(16, vec(1.6,0.2,0.1)*Size*1.5)
+
+holoScale(17, vec(1,0.3,0.1)*Size*1.5)
+holoScale(18, vec(1.5,0.3,0.1)*Size*1.5)
+holoScale(19, vec(2,0.2,0.1)*Size*1.5)
+holoScale(20, vec(2,0.2,0.1)*Size*1.5)
+holoScale(21, vec(2,0.2,0.1)*Size*1.5)
+holoScale(22, vec(1.6,0.2,0.1)*Size*1.5)
+holoScale(23, vec(1.6,0.2,0.1)*Size*1.5)
+holoScale(24, vec(1.6,0.2,0.1)*Size*1.5)
+
+holoAng(9999,Seat:toWorld(ang(0,-90,0)))
+holoAng(7,holoEntity(9999):toWorld(ang(0,180,0)))
+
+#Tail
+
+holoAng(1,holoEntity(9999):toWorld(ang(25,0,0)))
+holoAng(2,holoEntity(1):toWorld(ang(-35,0,0)))
+holoAng(3,holoEntity(2):toWorld(ang(-15,0,0)))
+holoAng(4,holoEntity(3):toWorld(ang(30,0,0)))
+holoAng(5,holoEntity(4):toWorld(ang(25,0,0)))
+holoAng(6,holoEntity(5):toWorld(ang(15,0,0)))
+
+#Torso
+
+holoAng(7, holoEntity(9999):toWorld(ang(-160,0,0)))
+holoAng(8, holoEntity(7):toWorld(ang(-15,0,0)))
+
+#right wing
+
+holoAng(9, holoEntity(8):toWorld(ang(0,115,0)))
+
+holoAng(10, holoEntity(9):toWorld(ang(0,-60,0)))
+
+holoAng(11, holoEntity(10):toWorld(ang(0,70,0)))
+holoAng(12, holoEntity(10):toWorld(ang(0,95,0)))
+holoAng(13, holoEntity(10):toWorld(ang(0,120,0)))
+holoAng(14, holoEntity(11):toWorld(ang(0,10,0)))
+holoAng(15, holoEntity(12):toWorld(ang(0,15,0)))
+holoAng(16, holoEntity(13):toWorld(ang(0,20,0)))
+
+#left wing
+
+holoAng(17, holoEntity(8):toWorld(ang(0,-115,0)))
+
+holoAng(18, holoEntity(17):toWorld(ang(0,60,0)))
+
+holoAng(19, holoEntity(18):toWorld(ang(0,-70,0)))
+holoAng(20, holoEntity(18):toWorld(ang(0,-95,0)))
+holoAng(21, holoEntity(18):toWorld(ang(0,-120,0)))
+holoAng(22, holoEntity(19):toWorld(ang(0,-10,0)))
+holoAng(23, holoEntity(20):toWorld(ang(0,-15,0)))
+holoAng(24, holoEntity(21):toWorld(ang(0,-20,0)))
+
+
+}
